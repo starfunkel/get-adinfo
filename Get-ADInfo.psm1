@@ -6,20 +6,21 @@ function Get-AdInfo{
     <#
         .SYNOPSIS
         Get-AD-Info is a feature rich information gathering tool which 
-        collects and display varios AD object information.
+        collects and display varios AD and VMware Horizon object information.
+        You have to have at least AD read right to display Information
     
         .NOTES
-        2021.
+        2021. / 2022
     
         .LINK
         See code! References in comments.
     
         .INPUTS
-        None.
+        Start by typting get-adinfo
     
         .OUTPUTS
         CLI only.
-        No export function
+        No export function.... yet
         None.
     #>
     
@@ -44,8 +45,6 @@ function Get-AdInfo{
         ""    
     } 
     
-
-
     if (Get-Module -Listavailable -name VMware.PowerCLI ) { ## Start VMware Automation Check
         Import-Module  VMware.VimAutomation.HorizonView 
     } else { ## Install Vmware.VimAutomation.HorizonView
@@ -64,7 +63,7 @@ function Get-AdInfo{
     do {
     
         $line
-        Write-Host "    ACTIVE DIRECTORY Domain Services Section (v 0.5.2)" -ForegroundColor Green 
+        Write-Host "    ACTIVE DIRECTORY Domain Services Section (v 0.5.3)" -ForegroundColor Green 
         $line
         Write-Host "|          Forest | Domain | Domain Controller           |" -ForegroundColor Yellow
         Write-Host "----------------------------------------------------------"
