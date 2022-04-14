@@ -45,8 +45,7 @@ function Get-AdInfo{
         ""    
     } 
     
-    <#
-    if (Get-Module -Listavailable -name VMware.Vim* ) { ## Start VMware Automation Check
+    if (Get-Module -Listavailable -name VMware.PowerCLI ) { ## Start VMware Automation Check
         Import-Module  VMware.VimAutomation.HorizonView 
     } else { ## Install Vmware.VimAutomation.HorizonView
         ""
@@ -59,7 +58,7 @@ function Get-AdInfo{
         Clear-Host
         ""
     } ## VMware Vi Automation check
-    #>
+    
     
     do {
     
