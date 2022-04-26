@@ -63,57 +63,51 @@ function Get-AdInfo{
     
     do {
     
-        $line
-        Write-Host "    ACTIVE DIRECTORY Domain Services Section (v 0.5.3)" -ForegroundColor Green 
-        $line
-        Write-Host "|          Forest | Domain | Domain Controller           |" -ForegroundColor Yellow
-        Write-Host "----------------------------------------------------------"
-        Write-Host "| 1 - Forest | Domain | Sites Configuration              |"
-        Write-Host "|     For Domain ($env:userdnsdomain)                    |"
-        Write-Host "| 2 - List Domain Controller                             |"
-        Write-Host "| 3 - Show Default Domain Password Policy                |"       
-        Write-Host "| 4 - List Domain Admins                                 |"
-        Write-Host "----------------------------------------------------------"
-        Write-Host "|                       GPMC MGMT                        |" -ForegroundColor Yellow # export option
-        Write-Host "----------------------------------------------------------"
-        Write-Host "| 5 - List all OUs                                       |"
-        Write-Host "| 6 - List of Active GPOs and their Links                |"
-        Write-Host "----------------------------------------------------------"
-        Write-Host "|                     User | Groups                      |" -ForegroundColor Yellow # export option
-        Write-Host "----------------------------------------------------------"
-        Write-Host "| 7 - Show Active AD USER with PasswordLastSet Info      |" # if staement nach was sortiert werden soll
-        Write-Host "| 8 - Show Disabled AD USER with last logon date         |"
-        Write-Host "| 9 - USERs last logon date filtered by time             |"
-        Write-Host "| 10 - Select and list USER Properties                   |"
-        Write-Host "| 11 - Show Group memberships of given USER              |"
-        Write-Host "| 12 - List all GROUPS without Builtin and Scheme GROUPS |"
-        Write-Host "| 13 - Select and list memebers of a GROUP               |"
-        Write-Host "----------------------------------------------------------"
-        Write-Host "|                     VmWare                             |" -ForegroundColor Yellow # export option
-        Write-Host "----------------------------------------------------------"
-        Write-Host "| 14 - List all currently connected USERs                |"
-        Write-Host "| 15 - List detailed information about VMs               |"
-        Write-Host "| !!!  Note: This only works if the                      |" -ForegroundColor Green
-        Write-Host "| !!!  VMware.VimAutomation.HorizonView PowerCli Module  |" -ForegroundColor Green
-        Write-Host "| !!!  is installed.                                     |" -ForegroundColor Green
-        Write-Host "----------------------------------------------------------"
-        Write-Host "|                  Machine Discovery                     |" -ForegroundColor Yellow # export option
-        Write-Host "----------------------------------------------------------"
-        Write-Host "| 16 - List all Windows Clients                          |"
-        Write-Host "| 17 - List all Windows Server                           |"
-        Write-Host "| 18 - List all Computers (by Operatingsystem)           |"
-        Write-Host "---------------------------------------------------------"
-        Write-Host "|                   AD Computer                          |" -ForegroundColor Yellow
-        Write-Host "---------------------------------------------------------"
-        Write-Host "| 19 - Run Systeminfo on Remote Computers                |"
-        Write-Host "| 20 - List all installed Software on remote Computer    |"
-        Write-Host "| 21 - Get the installed Printers of a user              |" 
-        Write-Host "---------------------------------------------------------"
-        Write-Host "                OnBoarding | OffBoarding" -ForegroundColor Yellow
-        Write-Host "---------------------------------------------------------"
+        function INFO {
+    
+            $ADINFOVERSION = 'alpha'
+            $WELCOME = @"
         
+        ==============================================================================================================================
+        ||      _______________    ___   ___  _____  __________         ||                                                          ||
+        ||    / ___/ __/_  ______/ _ | / _ \/  _/ |/ / __/ __ \         ||                                                          ||
+        ||   / (_ / _/  / / /___/ __ |/ // _/ //    / _// /_/ /         ||                                                          ||
+        ||   \___/___/ /_/     /_/ |_/____/___/_/|_/_/  \____/          ||                                                          ||
+        ||                                                              ||                                                          ||
+        ||        ACTIVE DIRECTORY Domain Services Section              ||                                                          ||
+        ------------------------------------------------------------------------------------------------------------------------------
+        ||           Forest | Domain | Domain Controller                ||                     VmWare                               ||
+        ------------------------------------------------------------------------------------------------------------------------------
+        ||        1 - Forest | Domain | Sites Configuration             ||     15 - List detailed information about VMs             || 
+        ||            For Domain ($env:userdnsdomain)                               
+        ||      2 - List Domain Controller                              ||                                                          ||                       
+        ||      3 - Show Default Domain Password Policy                 ||                                                          ||
+        ||      4 - List Domain Admins                                  ||------------------------------------------------------------                          
+        ------------------------------------------------------------------                Machine Discovery                         ||
+        ||                      GPMC MGMT                               ||----------------------------------------------------------||
+        -------------------------------------------------------------------     16 - List all Windows Clients                       ||
+        ||      5 - List all OUs                                        ||      17 - List all Windows Server                        ||
+        ||      6 - List of Active GPOs and their Links                 ||      18 - List all Computers (by Operatingsystem)        ||
+        ------------------------------------------------------------------------------------------------------------------------------ 
+        ||                    User | Groups                             ||                   AD Computer                            ||
+        ------------------------------------------------------------------------------------------------------------------------------
+        ||      7 - Show Active AD USER with PasswordLastSet Info       ||      19 - Run Systeminfo on Remote Computers             ||
+        ||      8 - Show Disabled AD USER with last logon date          ||      20 - List all installed Software on remote Computer ||
+        ||      9 - USERs last logon date filtered by time              ||      21 - Get the installed Printers of a user           ||
+        ||      10 - Select and list USER Properties                    ||                                                          ||
+        ||      11 - Show Group memberships of given USER               ||                                                          ||
+        ||      12 - List all GROUPS without Builtin and Scheme GROUPS  ||                                                          ||
+        ||      13 - Select and list memebers of a GROUP                ||                                                          ||
+        ------------------------------------------------------------------------------------------------------------------------------
+"@
         
-        $input=Read-Host "Select"
+            Write-Host -ForegroundColor "yellow" $WELCOME
+            Write-Host ""
+        }
+        
+        INFO
+
+        $input=Read-Host "        Select" 
         
         switch ($input) 
         { 
