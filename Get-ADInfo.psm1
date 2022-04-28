@@ -3,37 +3,6 @@
 
 function Get-AdInfo{
 
-    <#
-        .SYNOPSIS
-        Get-AD-Info is a feature rich information gathering tool which 
-        collects and display varios AD and VMware Horizon object information.
-        You have to have at least AD read right to display Information
-    
-        .NOTES
-        2021. / 2022
-    
-        .LINK
-        See code! References in comments.
-    
-        .INPUTS
-        Start by typting get-adinfo
-    
-        .OUTPUTS
-        CLI only.
-        No export function.... yet
-        None.
-    #>
-    
-    <#
-    $old_ui.RawUI.WindowTitle=$host.ui.RawUI.WindowTitle
-
-    $host.ui.RawUI.WindowTitle="AD Audit & Operations Tool"
-    
-     Spielerei --> erst anmachen, wenn die Rückbennenung des WindowTitles klappt
-    #>
-
-    $line="========================================================="
-    $line2="----------------------------------------------------------"
     
     if (Get-Module -ListAvailable -Name ActiveDirectory) { ## Start RSAT check
         Import-Module ActiveDirectory
@@ -63,31 +32,29 @@ function Get-AdInfo{
     
     do {
     
-        function INFO {
+        function MENU {
     
             $ADINFOVERSION = 'alpha'
             $WELCOME = @"
-        
         ==============================================================================================================================
-        ||      _______________    ___   ___  _____  __________         ||                                                          ||
-        ||    / ___/ __/_  ______/ _ | / _ \/  _/ |/ / __/ __ \         ||                                                          ||
-        ||   / (_ / _/  / / /___/ __ |/ // _/ //    / _// /_/ /         ||                                                          ||
-        ||   \___/___/ /_/     /_/ |_/____/___/_/|_/_/  \____/          ||                                                          ||
+        ||       _______________    ___   ___  _____  __________        ||                                                          ||
+        ||      / ___/ __/_  ______/ _ | / _ \/  _/ |/ / __/ __ \       ||     Licence: GPL-3.0                                     ||
+        ||     / (_ / _/  / / /___/ __ |/ // _/ //    / _// /_/ /       ||                                                          ||
+        ||     \___/___/ /_/     /_/ |_/____/___/_/|_/_/  \____/        ||     Author: Christian Rathnau                            ||
         ||                                                              ||                                                          ||
         ||        ACTIVE DIRECTORY Domain Services Section              ||                                                          ||
         ------------------------------------------------------------------------------------------------------------------------------
-        ||           Forest | Domain | Domain Controller                ||                     VmWare                               ||
+        ||           Forest | Domain | Domain Controller                ||                 Machine Discovery                        ||
         ------------------------------------------------------------------------------------------------------------------------------
-        ||        1 - Forest | Domain | Sites Configuration             ||     15 - List detailed information about VMs             || 
-        ||            For Domain ($env:userdnsdomain)                               
-        ||      2 - List Domain Controller                              ||                                                          ||                       
-        ||      3 - Show Default Domain Password Policy                 ||                                                          ||
-        ||      4 - List Domain Admins                                  ||------------------------------------------------------------                          
-        ------------------------------------------------------------------                Machine Discovery                         ||
-        ||                      GPMC MGMT                               ||----------------------------------------------------------||
-        -------------------------------------------------------------------     16 - List all Windows Clients                       ||
-        ||      5 - List all OUs                                        ||      17 - List all Windows Server                        ||
-        ||      6 - List of Active GPOs and their Links                 ||      18 - List all Computers (by Operatingsystem)        ||
+        ||        1 - Forest | Domain | Sites Configuration             ||      14 - List all Windows Clients                       || 
+        ||      2 - List Domain Controller                              ||      15 - List all Windows Server                        ||                       
+        ||      3 - Show Default Domain Password Policy                 ||      16 - List all Computers (by Operatingsystem)        ||
+        ||      4 - List Domain Admins                                  ||                                                          ||                        
+        ------------------------------------------------------------------ ---------------------------------------------------------||
+        ||                      GPMC MGMT                               ||                  VmWare                                  ||
+        ----------------------------------------------------------------------------------------------------------------------------||    
+        ||      5 - List all OUs                                        ||      17 - List all currently connected users on VSCs     ||
+        ||      6 - List of Active GPOs and their Links                 ||      18 - List detailed information about VMs            ||
         ------------------------------------------------------------------------------------------------------------------------------ 
         ||                    User | Groups                             ||                   AD Computer                            ||
         ------------------------------------------------------------------------------------------------------------------------------
@@ -105,7 +72,7 @@ function Get-AdInfo{
             Write-Host ""
         }
         
-        INFO
+        MENU
 
         $input=Read-Host "        Select" 
         
@@ -368,11 +335,68 @@ function Get-AdInfo{
                 Read-Host "Press 0 and Enter to continue"
             } ## Select and list memebers of group
             
+   
+    #######################
+    ## Machine Discovery ##
+    #######################
+            
+            14 {
+                ""
+                Write-Host -ForegroundColor Green "AD joined Windows Clients $env:userdnsdomain"
+                $client=Get-ADComputer -Filter {operatingsystem -notlike "*server*"} -Properties Name,Operatingsystem,OperatingSystemVersion,IPv4Address 
+                $ccount=$client | 
+                Measure-Object | 
+                Select-Object -ExpandProperty count
+                ''
+                Write-Output $client |
+                Sort-Object Operatingsystem |
+                Format-Table Name,Operatingsystem,OperatingSystemVersion,IPv4Address -AutoSize
+                ""
+                Write-Host "Total: "$ccount"" -ForegroundColor Yellow
+                ""
+                Read-Host "Press 0 and Enter to continue"
+
+                ## Evtl. Mit Test Open Port Service Discovery
+
+            } ## List all Windows Clients
+            
+            15 {
+                ""
+                Write-Host -ForegroundColor Green "Windows Server $env:userdnsdomain" 
+                $server=Get-ADComputer -Filter {operatingsystem -like "*server*"} -Properties Name,Operatingsystem,OperatingSystemVersion,IPv4Address 
+                $scount=$server | 
+                Measure-Object | 
+                Select-Object -ExpandProperty count
+                ""
+                Write-Output $server |
+                Sort-Object Operatingsystem |
+                Format-Table Name,Operatingsystem,OperatingSystemVersion,IPv4Address
+                ""
+                Write-Host "Total: "$scount"" -ForegroundColor Yellow
+                ""
+                Read-Host "Press 0 and Enter to continue"
+            } ##  List all Windows Server
+            
+            16 {
+                ""
+                Write-Host -ForegroundColor Green "All Computer $env:userdnsdomain" 
+                $all=Get-ADComputer -Filter * -Properties Name,Operatingsystem,OperatingSystemVersion,IPv4Address 
+                $acount=$all | Measure-Object | Select-Object -ExpandProperty count
+                ""
+                Write-Output $all |
+                Select-Object Name,Operatingsystem,OperatingSystemVersion,IPv4Address |
+                Sort-Object OperatingSystem |
+                Format-Table -GroupBy OperatingSystem 
+                Write-Host "Total: "$acount"" -ForegroundColor Yellow
+                ""
+                Read-Host "Press 0 and Enter to continue"
+            } ## List all Computers
+
     ############
     ## VmWare ##
     ############
 
-            14 {
+            17 {
                 # https://communities.vmware.com/t5/VMware-PowerCLI-Discussions/PowerCLI-List-All-View-Connected-Users-and-VM-HostNames/td-p/970892
                 ""
                 Write-Host -ForegroundColor Green "Please enter a Horizon View Server to which you want to connect"
@@ -396,7 +420,7 @@ function Get-AdInfo{
                 Read-Host "Press 0 and Enter to continue"
             } ## List all currently connected USERs to a given Horizon View Server
             
-            15 {
+            18 {
                 ""
                 Write-Hoist -ForegroundColor Green "Please enter a VCenter Server to which you want to connect"
                 $visrv=Read-Host "Please enter the Ip Adress"
@@ -409,63 +433,9 @@ function Get-AdInfo{
                 ""
                 Read-Host "Press 0 and Enter to continue"
             } ## List detailed statistics about VMs
-            
-    #######################
-    ## Machine Discovery ##
-    #######################
-            
-            16 {
-                ""
-                Write-Host -ForegroundColor Green "AD joined Windows Clients $env:userdnsdomain"
-                $client=Get-ADComputer -Filter {operatingsystem -notlike "*server*"} -Properties Name,Operatingsystem,OperatingSystemVersion,IPv4Address 
-                $ccount=$client | 
-                Measure-Object | 
-                Select-Object -ExpandProperty count
-                ''
-                Write-Output $client |
-                Sort-Object Operatingsystem |
-                Format-Table Name,Operatingsystem,OperatingSystemVersion,IPv4Address -AutoSize
-                ""
-                Write-Host "Total: "$ccount"" -ForegroundColor Yellow
-                ""
-                Read-Host "Press 0 and Enter to continue"
+    
 
-                ## Evtl. Mit Test Open Port Service Discovery
 
-            } ## List all Windows Clients
-            
-            17 {
-                ""
-                Write-Host -ForegroundColor Green "Windows Server $env:userdnsdomain" 
-                $server=Get-ADComputer -Filter {operatingsystem -like "*server*"} -Properties Name,Operatingsystem,OperatingSystemVersion,IPv4Address 
-                $scount=$server | 
-                Measure-Object | 
-                Select-Object -ExpandProperty count
-                ""
-                Write-Output $server |
-                Sort-Object Operatingsystem |
-                Format-Table Name,Operatingsystem,OperatingSystemVersion,IPv4Address
-                ""
-                Write-Host "Total: "$scount"" -ForegroundColor Yellow
-                ""
-                Read-Host "Press 0 and Enter to continue"
-            } ##  List all Windows Server
-            
-            18 {
-                ""
-                Write-Host -ForegroundColor Green "All Computer $env:userdnsdomain" 
-                $all=Get-ADComputer -Filter * -Properties Name,Operatingsystem,OperatingSystemVersion,IPv4Address 
-                $acount=$all | Measure-Object | Select-Object -ExpandProperty count
-                ""
-                Write-Output $all |
-                Select-Object Name,Operatingsystem,OperatingSystemVersion,IPv4Address |
-                Sort-Object OperatingSystem |
-                Format-Table -GroupBy OperatingSystem 
-                Write-Host "Total: "$acount"" -ForegroundColor Yellow
-                ""
-                Read-Host "Press 0 and Enter to continue"
-            } ## List all Computers
-            
     ##################
     ## AD Comnputer ##
     ##################
@@ -522,10 +492,10 @@ function Get-AdInfo{
                             
                         } ## All Windows Computer
             
-                            }  
+                            } ## Ene SystemInfo Do Schleife 
                             
                 }
-                while ($scope -ne "0")
+                while ($scope -ne "0") ## Ende Auswahl Do Schleife
                         
             } ## Run Systeminfo on Remote Computers
             
@@ -580,9 +550,9 @@ function Get-AdInfo{
 }
         
        
-######################
-## Helper Functions ##
-######################
+    ######################
+    ## Helper Functions ##
+    ######################
     
     function Get-UserNetPrinter {
         
