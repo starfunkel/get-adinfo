@@ -34,8 +34,7 @@ function Get-AdInfo{
     
         function MENU {
     
-            $ADINFOVERSION = 'alpha'
-            $WELCOME = @"
+        $WELCOME = @"
         ==============================================================================================================================
         ||       _______________    ___   ___  _____  __________        ||                                                          ||
         ||      / ___/ __/_  ______/ _ | / _ \/  _/ |/ / __/ __ \       ||     Licence: GPL-3.0                                     ||
@@ -46,7 +45,7 @@ function Get-AdInfo{
         ------------------------------------------------------------------------------------------------------------------------------
         ||           Forest | Domain | Domain Controller                ||                 Machine Discovery                        ||
         ------------------------------------------------------------------------------------------------------------------------------
-        ||        1 - Forest | Domain | Sites Configuration             ||      14 - List all Windows Clients                       || 
+        ||      1 - Forest | Domain | Sites Configuration               ||      14 - List all Windows Clients                       || 
         ||      2 - List Domain Controller                              ||      15 - List all Windows Server                        ||                       
         ||      3 - Show Default Domain Password Policy                 ||      16 - List all Computers (by Operatingsystem)        ||
         ||      4 - List Domain Admins                                  ||                                                          ||                        
