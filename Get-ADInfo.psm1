@@ -195,7 +195,7 @@ function Get-AdInfo{
                 Format-table SamAccountName, Displayname, Enabled, lastlogondate, LastBadpasswordAttempt, BadLogonCount, PasswordLastSet, PasswordNeverExpires, SID
                 ""
                 Read-Host "Press 0 and Enter to continue"
-            } ## List Details of Domain Admins                                                                           ----->>>> geht das hier?
+            } ## List Details of Domain Admins
             
     ###############
     ## GPMC MGMT ##
@@ -404,7 +404,7 @@ function Get-AdInfo{
                 Write-Host -ForegroundColor Green "The following USERs are currently connect to VMs"
             
                 Import-Module -Name VMware.VimAutomation.HorizonView
-                connect-hvserver $hrsrv    
+                connect-hvserver $hvsrv    
             
                 $query = New-Object "Vmware.Hv.QueryDefinition"
                 $query.queryEntityType = "SessionLocalSummaryView"
