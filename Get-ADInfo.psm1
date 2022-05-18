@@ -89,19 +89,18 @@ function Get-AdInfo{
                 $get=Get-ADForest
                 $forest+=New-Object -TypeName PSObject -Property ([ordered]@{
             
-                "Root Domain"=$get.RootDomain
-                "Forest Mode"=$get.ForestMode
-                "Domains"=$get.Domains -join ","
-                "Sites"=$get.Sites -join ","
-                })
+                    "Root Domain"=$get.RootDomain
+                    "Forest Mode"=$get.ForestMode
+                    "Domains"=$get.Domains -join ","
+                    "Sites"=$get.Sites -join ","
+                    }
+                )
             
                 $forest | Format-Table -AutoSize -Wrap
-                
                 
                 Write-Host -ForegroundColor Green "DOMAIN Configuration" 
                 
                 Get-ADDomain | Format-Table DNSRoot, DomainMode, ComputersContainer, DomainSID -AutoSize -Wrap
-            
                 Write-Host -ForegroundColor Green "SITES Configuration"
                     
                     $GetSite = [System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest().Sites
@@ -139,38 +138,36 @@ function Get-AdInfo{
                 $domdc=@()
             
                 foreach ($dc in $dcs) {
-                $domdc += New-Object -TypeName PSObject -Property (
-            
-                [ordered]@{
-                "Name" = $dc.Name
-                "IP Address" = $dc.IPv4Address
-                "OS" = $dc.OperatingSystem
-                "Site" = $dc.Site
-                "Global Catalog" = $dc.IsGlobalCatalog
-                "FSMO Roles" = $dc.OperationMasterRoles -join "," # -join "`n"
-                }
-                )
+                    $domdc += New-Object -TypeName PSObject -Property (
+                
+                        [ordered]@{
+                        "Name" = $dc.Name
+                        "IP Address" = $dc.IPv4Address
+                        "OS" = $dc.OperatingSystem
+                        "Site" = $dc.Site
+                        "Global Catalog" = $dc.IsGlobalCatalog
+                        "FSMO Roles" = $dc.OperationMasterRoles -join "," # -join "`n"
+                        }
+                    )
                 }
                 ""
                 
                 $domdc | Format-Table -AutoSize -Wrap
             
-                
                 Write-Host "Total Number: "$dccount"" -ForegroundColor Yellow
             
                 ""
-                
                 $ping=Read-Host "Do you want to test connectivity (ping) to these Domain Controllers? (Y/N)"
             
                 If ($ping -eq "Y") {
                 foreach ($items in $dcs.Name) {
-                Test-Connection $items -Count 1 | Format-Table Address, IPv4Address, ReplySize, ResponseTime}
-                Read-Host "Press 0 and Enter to continue"
+                    Test-Connection $items -Count 1 | Format-Table Address, IPv4Address, ReplySize, ResponseTime}
+                    Read-Host "Press 0 and Enter to continue"
                 }
                 
                 else {
                 ""
-                Read-Host "Press 0 and Enter to continue"
+                    Read-Host "Press 0 and Enter to continue"
                 }
             
             } ##  List Domain Controller
@@ -189,7 +186,7 @@ function Get-AdInfo{
                 ""
                 Write-Host -ForegroundColor Green "The following USER are member of the Domain Admins group:"`n
                 
-                Get-ADGroupMember -Identity Administrators -Recursive |
+                Get-ADGroupMember -Identity Administratoren -Recursive |
                 Get-ADUser -Properties *  |
                 Select-Object SamAccountName, Displayname, Enabled, lastlogondate, LastBadpasswordAttempt, BadLogonCount, PasswordLastSet, PasswordNeverExpires, SID |
                 Format-table SamAccountName, Displayname, Enabled, lastlogondate, LastBadpasswordAttempt, BadLogonCount, PasswordLastSet, PasswordNeverExpires, SID
