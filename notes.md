@@ -40,3 +40,17 @@ Netzwerk :
 get all connected users of a network printShareName
 
 Get-WmiObject Win32_ServerConnection -ComputerName vwfile | Select-Object ShareName,UserName,ComputerName | Where-Object {$_.ShareName -eq "xxx"}
+
+#--------------------------------------------------------------------------
+Printer:
+
+Get-Printer | ? published -eq $true
+
+https://devblogs.microsoft.com/scripting/weekend-scripter-easily-publish-all-printers-on-a-print-server-to-active-directory/
+
+Get-Printers -status "All" -errorlog -client "OK" -solution "FIN" -Verbose | Select-Object 'Environment', 'Logical name', 'Server name', 'Name', 'Location', 'Job count since last reset', 'Status', 'Printer status', 'Printer state', 'Detected error state', 'Extended detected error state', 'Extended printer status', 'Port name', 'Driver name', 'Network', 'Shared', 'Share name', 'Spool enabled', 'Work offline', 'Default', 'IP', 'Collected' | Out-GridView
+Copy
+
+https://www.improvescripting.com/how-to-list-installed-printers-using-powershell/
+
+#--------------------------------------------------------------------------
