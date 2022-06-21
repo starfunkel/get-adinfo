@@ -330,13 +330,24 @@ function Get-AdInfo{
                 ""
                 Read-Host "Press 0 and Enter to continue"
             } ## Select and list memebers of group
+
+            14 {
+                ''
+                Get-ADOrganizationalUnit -filter * -Properties Description -PipelineVariable pv |
+                Select DistinguishedName,Name,Description,
+                @{Name="Children"; Expression = {
+                Get-ADObject -filter * -SearchBase $pv.distinguishedname |
+                Where { $_.objectclass -ne "organizationalunit"} |
+                Measure-Object | Select -ExpandProperty Count }} | Where {$_.children -eq 0}
+                ''
+            } ## Get all empty OUs https://petri.com/powershell-problem-solver-finding-empty-organizational-units-active-directory/
             
    
     #######################
     ## Machine Discovery ##
     #######################
             
-            14 {
+            15 {
                 ""
                 Write-Host -ForegroundColor Green "AD joined Windows Clients $env:userdnsdomain"
                 $client=Get-ADComputer -Filter {operatingsystem -notlike "*server*"} -Properties Name,Operatingsystem,OperatingSystemVersion,IPv4Address 
@@ -356,7 +367,7 @@ function Get-AdInfo{
 
             } ## List all Windows Clients
             
-            15 {
+            16 {
                 ""
                 Write-Host -ForegroundColor Green "Windows Server $env:userdnsdomain" 
                 $server=Get-ADComputer -Filter {operatingsystem -like "*server*"} -Properties Name,Operatingsystem,OperatingSystemVersion,IPv4Address 
@@ -373,7 +384,7 @@ function Get-AdInfo{
                 Read-Host "Press 0 and Enter to continue"
             } ##  List all Windows Server
             
-            16 {
+            17 {
                 ""
                 Write-Host -ForegroundColor Green "All Computer $env:userdnsdomain" 
                 $all=Get-ADComputer -Filter * -Properties Name,Operatingsystem,OperatingSystemVersion,IPv4Address 
@@ -392,7 +403,7 @@ function Get-AdInfo{
     ## VmWare ##
     ############
 
-            17 {
+            18 {
                 # https://communities.vmware.com/t5/VMware-PowerCLI-Discussions/PowerCLI-List-All-View-Connected-Users-and-VM-HostNames/td-p/970892
                 ""
                 Write-Host -ForegroundColor Green "Please enter a Horizon View Server to which you want to connect"
@@ -416,7 +427,7 @@ function Get-AdInfo{
                 Read-Host "Press 0 and Enter to continue"
             } ## List all currently connected USERs to a given Horizon View Server
             
-            18 {
+            19 {
                 ""
                 Write-Hoist -ForegroundColor Green "Please enter a VCenter Server to which you want to connect"
                 $visrv=Read-Host "Please enter the Ip Adress"
@@ -436,7 +447,7 @@ function Get-AdInfo{
     ## AD Comnputer ##
     ##################
             
-            19 {
+            20 {
                 do {
             
                     Write-Host ""
@@ -495,7 +506,7 @@ function Get-AdInfo{
                         
             } ## Run Systeminfo on Remote Computers
             
-            20 {
+            21 {
                 ""
                 Write-Host -ForegroundColor Green "Enter a COMPUTER name to list the installed software (CIM -> WinRM)"
                 ""
@@ -511,7 +522,7 @@ function Get-AdInfo{
                 Read-Host "Press 0 and Enter to continue"
             } ## Get installed Software on remote Computer                                                                           ----->>>> geht das hier?
             
-            20 {
+            22 {
                 ""
                 Write-Host -ForegroundColor Green "Enter a COMPUTER Name to list the USERs installed printers"
                 ""
