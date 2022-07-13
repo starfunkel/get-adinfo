@@ -73,9 +73,9 @@ function Get-AdInfo{
         
         MENU
 
-        $input=Read-Host "        Select" 
+        $inputs=Read-Host "        Select" 
         
-        switch ($input) 
+        switch ($inputs) 
         { 
         
     ##########################################
@@ -277,9 +277,9 @@ function Get-AdInfo{
                     
                     Get-ADUser $userp -Properties * |
                     Format-List GivenName,SurName,DistinguishedName,Enabled,EmailAddress,ProfilePath,ScriptPath,MemberOf,LastLogonDate,whencreated
-                    $inputs=Read-Host "Quit searching users? (Y/N)"
+                    $inputss=Read-Host "Quit searching users? (Y/N)"
                     }
-                while ($inputs -eq "N")
+                while ($inputss -eq "N")
             
             } ## Select and list USER Properties
             
@@ -334,11 +334,11 @@ function Get-AdInfo{
             14 {
                 ''
                 Get-ADOrganizationalUnit -filter * -Properties Description -PipelineVariable pv |
-                Select DistinguishedName,Name,Description,
+                Select-Object DistinguishedName,Name,Description,
                 @{Name="Children"; Expression = {
                 Get-ADObject -filter * -SearchBase $pv.distinguishedname |
-                Where { $_.objectclass -ne "organizationalunit"} |
-                Measure-Object | Select -ExpandProperty Count }} | Where {$_.children -eq 0}
+                Where-Object { $_.objectclass -ne "organizationalunit"} |
+                Measure-Object | Select-Object -ExpandProperty Count }} | Where-Object {$_.children -eq 0}
                 ''
             } ## Get all empty OUs https://petri.com/powershell-problem-solver-finding-empty-organizational-units-active-directory/
             
@@ -553,7 +553,7 @@ function Get-AdInfo{
 
         }
     }
-    while ($input -ne "0")
+    while ($inputs -ne "0")
 }
         
        
