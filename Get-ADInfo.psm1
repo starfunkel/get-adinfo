@@ -76,6 +76,7 @@ function Get-AdInfo{
         $inputs=Read-Host "        Select" 
         
         switch ($inputs) 
+        
         { 
         
     ##########################################
