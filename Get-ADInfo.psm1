@@ -1,5 +1,5 @@
-#requires -version 5.1
-# requires -module GroupPolicy,ActiveDirectory,VMware.VimAutomation.HorizonView
+requires -version 5.1
+requires -module GroupPolicy,ActiveDirectory,VMware.VimAutomation.HorizonView
 
 function Get-AdInfo{
 
@@ -50,7 +50,7 @@ function Get-AdInfo{
         ||      3 - Show Default Domain Password Policy                 ||      16 - List all Computers (by Operatingsystem)        ||
         ||      4 - List Domain Admins                                  ||                                                          ||                        
         ------------------------------------------------------------------ ---------------------------------------------------------||
-        ||                      GPMC MGMT                               ||                  VmWare                                  ||
+        ||                      GPMC MGMT                               ||                     VmWare                               ||
         ----------------------------------------------------------------------------------------------------------------------------||    
         ||      5 - List all OUs                                        ||      17 - List all currently connected users on VSCs     ||
         ||      6 - List of Active GPOs and their Links                 ||      18 - List detailed information about VMs            ||
@@ -72,9 +72,7 @@ function Get-AdInfo{
         }
         
         MENU
-
         $inputs=Read-Host "        Select" 
-        
         switch ($inputs) 
         
         { 
@@ -521,7 +519,7 @@ function Get-AdInfo{
                 Sort-Object Name
                 ""
                 Read-Host "Press 0 and Enter to continue"
-            } ## Get installed Software on remote Computer                                                                           ----->>>> geht das hier?
+            } ## Get installed Software on remote Computer
             
             22 {
                 ""
@@ -662,4 +660,5 @@ function Get-AdInfo{
                             }
                         }
                 }
-        } ## Get installed Printers on Computers ## https://www.reddit.com/r/PowerShell/comments/6h3a93/how_to_list_off_the_default_printer_for_each_user/
+        } ## Get installed Printers on Computers 
+          ## https://www.reddit.com/r/PowerShell/comments/6h3a93/how_to_list_off_the_default_printer_for_each_user/
