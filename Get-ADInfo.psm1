@@ -1,5 +1,5 @@
-requires -version 5.1
-requires -module GroupPolicy,ActiveDirectory,VMware.VimAutomation.HorizonView
+#require -version 5.1
+#require -module GroupPolicy,ActiveDirectory,VMware.VimAutomation.HorizonView
 
 function Get-AdInfo{
 
