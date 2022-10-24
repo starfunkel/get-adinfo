@@ -262,7 +262,7 @@ function Get-AdInfo{
                 Format-Table Name,SamAccountName,LastLogonDate -AutoSize 
                 
                 
-                Write-Host "User and Computer Logons are replicated every 14 days. Data might be not completely up-to-date." -ForegroundColor Yellow
+                Write-Host "User and Computer Logons are replicated every 14 days. Data might not be completely up-to-date." -ForegroundColor Yellow
                 ""
                 Read-Host "Press 0 and Enter to continue"
             } ## Select time and show lastlogon time of Users
