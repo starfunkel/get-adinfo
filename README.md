@@ -4,13 +4,6 @@
 
 ***
 
-## Download & Usage
-
-1. Either download manually or clone repo to prefered location.
-2. Open Powershell and import module
->
-***
-
 ### Usage
 
 ```
