@@ -63,7 +63,7 @@ function Get-AdInfo{
         ||      10 - Select and list USER Properties                    ||                                                          ||
         ||      11 - Show Group memberships of given USER               ||                                                          ||
         ||      12 - List all GROUPS without Builtin and Scheme GROUPS  ||                                                          ||
-        ||      13 - Select and list memebers of a GROUP                ||                                                          ||
+        ||      13 - Select and list members of a GROUP                ||                                                          ||
         ------------------------------------------------------------------------------------------------------------------------------
 "@
         
