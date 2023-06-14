@@ -428,7 +428,7 @@ function Get-AdInfo{
             
             19 {
                 ""
-                Write-Hoist -ForegroundColor Green "Please enter a VCenter Server to which you want to connect"
+                Write-Host -ForegroundColor Green "Please enter a VCenter Server to which you want to connect"
                 $visrv=Read-Host "Please enter the Ip Adress"
                 Write-Host -ForegroundColor Green "VM statistics of all Vms running on $visrv"
             
