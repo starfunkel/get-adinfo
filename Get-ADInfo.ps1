@@ -63,7 +63,7 @@ function Get-AdInfo{
         ||      10 - Select and list USER Properties                    ||                                                          ||
         ||      11 - Show Group memberships of given USER               ||                                                          ||
         ||      12 - List all GROUPS without Builtin and Scheme GROUPS  ||                                                          ||
-        ||      13 - Select and list memebers of a GROUP                ||                                                          ||
+        ||      13 - Select and list members of a GROUP                ||                                                          ||
         ------------------------------------------------------------------------------------------------------------------------------
 "@
         
@@ -428,7 +428,7 @@ function Get-AdInfo{
             
             19 {
                 ""
-                Write-Hoist -ForegroundColor Green "Please enter a VCenter Server to which you want to connect"
+                Write-Host -ForegroundColor Green "Please enter a VCenter Server to which you want to connect"
                 $visrv=Read-Host "Please enter the Ip Adress"
                 Write-Host -ForegroundColor Green "VM statistics of all Vms running on $visrv"
             
