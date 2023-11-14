@@ -256,7 +256,7 @@ function Get-AdInfo{
                 Write-Host  ""
                 Write-Host -ForegroundColor Green "The following USERS are enabled and have not logged on for $time days:"
             
-                Get-ADUser -Filter {enabled -eq $false} -Properties LastLogonDate |
+                Get-ADUser -Filter {enabled -eq $true} -Properties LastLogonDate |
                 Where-Object {$_.lastlogondate -ne $null -and $_.lastlogondate -le ((get-date).adddays(-$time))} |
                 Sort-Object -Property LastLogonDate -Descending |
                 Format-Table Name,SamAccountName,LastLogonDate -AutoSize 
